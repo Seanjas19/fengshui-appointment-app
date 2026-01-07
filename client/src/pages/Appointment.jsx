@@ -1,21 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import api from "../api/axios";
 
 const Appointment = () => {
-
     const [appointments, setAppointments] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const response = await fetch('/api/appointment');
+                // Use 'api' so the interceptor sends your token!
+                const response = await api.get('/appointment');
                 setAppointments(response.data);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error("Error fetching appointments:", err);
-            }
-            finally {
+            } finally {
                 setLoading(false); 
             }
         };
@@ -23,16 +21,17 @@ const Appointment = () => {
     }, []);
 
     const handleDelete = async (id) => {
+        if (!window.confirm("Cancel this appointment?")) return;
         try {
-            await api.delete(`/appoinment/${id}`);
-            setAppointments(appointments.filter(appt => appt.id != id));
-        }
-        catch (err) {
-            console.error(err);
+            // Check spelling: /appointment/ or /appoinment/?
+            await api.delete(`/appointment/${id}`);
+            setAppointments(appointments.filter(appt => appt.id !== id));
+        } catch (err) {
+            console.error("Delete failed:", err);
         }
     };
     
-    if (loading) return <p>Loading your appointment...</p>;
+    if (loading) return <p>Loading your appointments...</p>;
 
     return (
         <div>
@@ -46,6 +45,7 @@ const Appointment = () => {
                             <th>Date</th>
                             <th>Service</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,13 +55,15 @@ const Appointment = () => {
                                 <td>{appt.service_type}</td>
                                 <td>{appt.status}</td>
                                 <td>
-                                    <button onClick={() => handleDelete(appt.id)} 
-                                    style={{ color: 'red', cursor: 'pointer'}}
-                                    >Cancel
+                                    <button 
+                                        onClick={() => handleDelete(appt.id)} 
+                                        style={{ color: 'red', cursor: 'pointer'}}
+                                    >
+                                        Cancel
                                     </button>
                                 </td>
                             </tr>
-                        ))};
+                        ))}
                     </tbody>
                 </table>
             )}

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Contact from './pages/Contact.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Login from './pages/Login.jsx'
+import BookAppointment from './pages/BookAppointment.jsx'
 import Appointment from './pages/Appointment.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import Navbar from './components/Navbar.jsx'
@@ -22,6 +23,12 @@ function App() {
         <Route path="/sign-up" element={<SignUp />} />
           
         <Route path="/login" element={<Login />} />
+
+        <Route path="/book" element={
+          <ProtectedRoute>
+            <BookAppointment />
+          </ProtectedRoute>
+        } />
 
         <Route path="/appointments" element={
           <ProtectedRoute>

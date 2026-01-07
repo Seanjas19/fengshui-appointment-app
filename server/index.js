@@ -159,8 +159,27 @@ app.post("/api/appointment", authorize, async (req, res) => {
         console.error(err.message);
         return res.status(500).send("Server Error");
     }
-})
+});
 
+app.delete("/api/appointment/:id", authorize, async(req, res) => {
+    try {
+        const {id} = req.params;
+
+        const user_id = req.user;
+
+        const del_appointment = await db.query("DELETE FROM appointments WHERE appoinment_id = $1 AND user_id = $2 RETURNING *", [id, user_id]);
+
+        if (del_appointment.rows.length === 0) {
+            return res.status(404).json({ message: "Appointment not found or unauthorized" });
+        }
+        
+        res.status(200).json({message: "Appointment Cancelled Successfully!"});
+    }
+    catch (err) {
+        console.error(err.message);
+        return res.status(500).send("Server Error");
+    }
+});
 
 //Backend is listen to which PORT 
 app.listen(PORT, () => {

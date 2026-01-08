@@ -32,6 +32,8 @@ async function createTables() {
                 appointment_id SERIAL PRIMARY KEY,
                 user_id INT REFERENCES users(user_id),
                 appointment_date DATE NOT NULL,
+                service_type VARCHAR(255) NOT NULL,  
+                user_message TEXT,
                 appointment_status VARCHAR(50) DEFAULT 'confirmed',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );`

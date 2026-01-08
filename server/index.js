@@ -142,11 +142,11 @@ app.post("/api/appointment", authorize, async (req, res) => {
 
     try{
 
-        const {appointment_date, appointment_status} = req.body;
+        const {appointment_date, appointment_status, service_type, user_message} = req.body;
 
         const newAppointment = await db.query(
-            "INSERT INTO appointments(user_id, appointment_date, appointment_status) VALUES ($1, $2, $3) RETURNING *",
-            [req.user, appointment_date, appointment_status]
+            "INSERT INTO appointments(user_id, appointment_date, appointment_status, service_type, user_message) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+            [req.user.id, appointment_date, appointment_status, service_type, user_message]
         );
         
         res.status(201).json({

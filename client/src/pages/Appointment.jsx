@@ -10,7 +10,10 @@ const Appointment = () => {
             try {
                 // Use 'api' so the interceptor sends your token!
                 const response = await api.get('/appointment');
-                setAppointments(response.data);
+                console.log("Type of response.data:", typeof response.data); // Should be 'object'
+                console.log("Is it an Array?:", Array.isArray(response.data)); // Must be 'true'
+                console.log("Actual Data:", response.data);
+                setAppointments(response.data.appointments);
             } catch (err) {
                 console.error("Error fetching appointments:", err);
             } finally {
@@ -50,13 +53,13 @@ const Appointment = () => {
                     </thead>
                     <tbody>
                         {appointments.map((appt) => (
-                            <tr key={appt.id}>
+                            <tr key={appt.appointment_id}>
                                 <td>{appt.appointment_date}</td>
                                 <td>{appt.service_type}</td>
-                                <td>{appt.status}</td>
+                                <td>{appt.appointment_status}</td>
                                 <td>
                                     <button 
-                                        onClick={() => handleDelete(appt.id)} 
+                                        onClick={() => handleDelete(appt.appointment_id)} 
                                         style={{ color: 'red', cursor: 'pointer'}}
                                     >
                                         Cancel

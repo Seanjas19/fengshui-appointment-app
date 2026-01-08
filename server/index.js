@@ -26,7 +26,7 @@ app.get("/api/appointment", authorize, async (req, res) => {
 
         res.status(200).json({
             message: "Appointment Retrieved Successfully!",
-            appoinments: get_appointments.rows
+            appointments: get_appointments.rows
         });
     }
     catch (err) {
@@ -142,13 +142,21 @@ app.post("/api/appointment", authorize, async (req, res) => {
 
     try{
 
+        console.log("DEBUG 1 : User ID from Token:", req.user);
+
+        console.log("DEBUG 2 : Appointment Data Received:", req.body);
+
+        console.log("DEBUG 3 : ID being sent to SQL:", req.user);
+
         const {appointment_date, appointment_status, service_type, user_message} = req.body;
 
         const newAppointment = await db.query(
             "INSERT INTO appointments(user_id, appointment_date, appointment_status, service_type, user_message) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-            [req.user.id, appointment_date, appointment_status, service_type, user_message]
+            [req.user, appointment_date, appointment_status, service_type, user_message]
         );
         
+        console.log("DEBUG 4 : New Appointment save in SQL:", newAppointment.rows[0]);
+
         res.status(201).json({
             message: "Appointment Successful",
             appointment: newAppointment.rows[0]
@@ -167,7 +175,7 @@ app.delete("/api/appointment/:id", authorize, async(req, res) => {
 
         const user_id = req.user;
 
-        const del_appointment = await db.query("DELETE FROM appointments WHERE appoinment_id = $1 AND user_id = $2 RETURNING *", [id, user_id]);
+        const del_appointment = await db.query("DELETE FROM appointments WHERE appointment_id = $1 AND user_id = $2 RETURNING *", [id, user_id]);
 
         if (del_appointment.rows.length === 0) {
             return res.status(404).json({ message: "Appointment not found or unauthorized" });

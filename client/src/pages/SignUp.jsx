@@ -35,7 +35,7 @@ const SignUp = () => {
         }
 
         try {
-            const response = await api.post("/sign-up", clean_data);
+            const response = await api.post("/auth/sign-up", clean_data);
             alert(response.data.message);
         }
         catch (err) {

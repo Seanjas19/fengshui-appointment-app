@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
-const db = require("./db");
-const authorize = require("./middleware/authorization.js");
+const helmet = require("helmet");
 require("dotenv").config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(helmet());
 
 app.use("/api/auth", require("./routes/authRoutes.js"));
 
@@ -17,6 +17,7 @@ app.use("/api/contact", require("./routes/contactRoutes"));
 
 const errorMiddleware = require("./middleware/errorMiddleware.js");
 app.use(errorMiddleware);
+
 
 
 const PORT = process.env.PORT || 5000;

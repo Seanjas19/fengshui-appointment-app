@@ -7,6 +7,7 @@ import BookAppointment from './pages/BookAppointment.jsx'
 import Appointment from './pages/Appointment.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import Navbar from './components/Navbar.jsx'
+import Home from './pages/Home.jsx'
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
       <Routes>
         {/* Define which path shows which component */}
           
-        <Route path="/" element={<h1>Welcome to Feng Shui Master</h1>} />
+        <Route path="/" element={<Home />} />
           
         <Route path="/contact" element={<Contact />} />
           

@@ -10,20 +10,34 @@ const Navbar = () =>{
     }
 
     return (
-        <nav style={{ display: 'flex', gap: '20px', padding: '10px', background: '#f4f4f4' }}>
-            <Link to="/">Home</Link>
-            {isLoggedIn ? (
-                <>
-                    <Link to="/appointments">Appointments</Link>
-                    <button onClick={handleLogout}>Logout</button>
-                </>
+        <nav className="bg-mystic-green sticky top-0 z-50 px-8 py-4 shadow-xl flex justify-between items-center">
+            {/* Logo Section */}
+            <Link to="/" className="text-2xl font-serif text-ghost-white tracking-widest hover:opacity-80 transition-opacity">
+                LONGJET
+            </Link>
 
-            ) : (
-                <>
-                    <Link to="/login">Login</Link>
-                    <Link to="/sign-up">Sign Up</Link>  
-                </>
-            )}
+            {/* Navigation Links */}
+            <div className="flex items-center space-x-8">
+                <Link to="/" className="nav-link">Home</Link>
+                
+                {isLoggedIn ? (
+                    <>
+                        <Link to="/appointments" className="nav-link">Appointments</Link>
+                        <button onClick={handleLogout} className="btn-outline text-sm">
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    <div className="flex items-center space-x-6">
+                        <Link to="/login" className="text-ghost-white hover:underline underline-offset-8 transition-all font-bold">
+                            Log In
+                        </Link>
+                        <Link to="/sign-up" className="btn-primary">
+                            Get Started
+                        </Link>
+                    </div>
+                )}
+            </div>
         </nav>
     );
 }
